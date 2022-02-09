@@ -22,18 +22,26 @@ void ofApp::draw(){
         int startX = 100;
         // endX = 700
         float prevX = startX;
+        float prevY = rowHeight + ofRandom(5,10);
         for (int seg = 0; seg < 40; seg ++){
 //            float yNoise = 10 + ofRandom(0,1)*2;
-            float y = rowHeight + ofRandom(0,1)*10;
-            float y1 = rowHeight - ofRandom(0,1)*10;
-            float xNoise = ofRandom(25,30);
+            float y1 = rowHeight - ofRandom(5,10);
+            float xNoise = ofRandom(15,20);
             float midX = prevX + xNoise;
-            ofDrawLine(prevX, y, midX, y1);
+            ofDrawLine(prevX, prevY, midX, y1);
             
-            float x2 = ofRandom(prevX,midX);
-            float y2 = rowHeight + ofRandom(0,1)*10;
+            float x2 = ofRandom(prevX+5,midX-5);
+            float y2 = rowHeight + ofRandom(5,10);
             ofDrawLine(midX, y1, x2, y2);
             prevX = x2;
+            prevY = y2;
+            
+            
+            
+            
+            
+            
+            
         }
     }
 
