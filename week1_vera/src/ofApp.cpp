@@ -15,25 +15,32 @@ void ofApp::draw(){
     ofSeedRandom(mouseX);
     ofBackground(239,237,229);
     ofSetColor(92,111,133);
-    ofSetLineWidth(0.5);
+    ofSetLineWidth(1.2);
     for (int row = 0; row < 24; row ++){
-        int gap = 27.5;
+        int gap = 25;
         int rowHeight = 75 + row * gap;
         int startX = 100;
         // endX = 700
-        float prevX = startX;
+        
+        float prevX;
+        //first line indent
+        if (row == 0){prevX = 175;}
+        else{ prevX = startX;}
+        
         float prevY = rowHeight + ofRandom(5,10);
 //        for (int seg = 0; seg < 100; seg ++){
+        float segment = ofRandom(0,10)*10+350;
+        
         while(prevX < 700){
-            if (prevX > 300){ //introduce more entropy
-                if (ofRandom(0,1)<0.5){ //50% with more entropy
-                    float y1 = rowHeight - ofRandom(0,15);
-                    float xNoise = ofRandom(15,20);
+            if (prevX > segment){ //introduce more entropy
+                if (ofRandom(0,1)<0.3){ //% with more entropy
+                    float y1 = rowHeight - ofRandom(0,18);
+                    float xNoise = ofRandom(20,25);
                     float midX = prevX + xNoise;
                     ofDrawLine(prevX, prevY, midX, y1);
                     
-                    float x2 = ofRandom(prevX,midX-5);
-                    float y2 = rowHeight + ofRandom(0,15);
+                    float x2 = ofRandom(prevX+3,midX-8);
+                    float y2 = rowHeight + ofRandom(0,18);
                     ofDrawLine(midX, y1, x2, y2);
                     prevX = x2;
                     prevY = y2;
