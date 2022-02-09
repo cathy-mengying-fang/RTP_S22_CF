@@ -12,6 +12,14 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+    ofBackground(239,237,229);
+    ofSetColor(92,111,133);
+    ofSetLineWidth(0.5);
+    for (int i = 0; i < 24; i++){
+        int gap = 27.5;
+        int y = 75 + i*gap;
+        ofDrawLine(100, y, 700, y);
+    }
 
 }
 
