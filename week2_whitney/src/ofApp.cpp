@@ -1,8 +1,9 @@
 #include "ofApp.h"
 
+float startTime;
 //--------------------------------------------------------------
 void ofApp::setup(){
-
+    startTime = 0;
 }
 
 //--------------------------------------------------------------
@@ -45,8 +46,11 @@ void ofApp::draw(){
         
 //        trail.begin(); # this somehow duplicates multiple polylines...
         elem_angle = 0;
+//        float offset_angle;
 //        ofDrawCircle(0,0,10);
         while(elem_angle<2*PI){
+//            offset_angle = elem_angle+angle;
+            
             float x = newX + unit_radius * cos(elem_angle*2);
             float y = newY + unit_radius * sin(elem_angle*3);
 //            cout<<x<<endl;
@@ -65,13 +69,14 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    if (key == 's'){
-            ofImage image;
-            int width = ofGetWindowWidth();
-            int height = ofGetWindowHeight();
-            image.grabScreen(0, 0, width, height);
-            ofSaveImage(image,"file.jpg"); //save to disk
-        }
+//    if (key == 's'){
+//            ofImage image;
+//            int width = ofGetWindowWidth();
+//            int height = ofGetWindowHeight();
+//            image.grabScreen(0, 0, width, height);
+//            ofSaveImage(image,"file.jpg"); //save to disk
+//        }
+//    startTime = ofGetElapsedTimef();
 
 }
 
