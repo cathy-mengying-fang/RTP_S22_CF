@@ -22,5 +22,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     ofTrueTypeFont font;
+    ofShader shaderBlurY;
+    ofShader shaderBlurX;
 		
 };

@@ -3,6 +3,9 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     font.load("helvetica.ttf", 350, true, true, true);
+    ofEnableAlphaBlending();
+    shaderBlurX.load("shadersGL3/shaderBlurX");
+    shaderBlurY.load("shadersGL3/shaderBlurY");
 }
 
 //--------------------------------------------------------------
@@ -13,8 +16,9 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     
-//    ofBackground(194,176,159);
-    ofBackground(255,255,255,255);
+    ofBackground(194,176,159);
+//    ofBackground(255,255,255,255);
+//    int alpha = 3;
     ofColor red = ofColor(163,65,55);
     ofColor yellow = ofColor(195,159,54);
     ofColor blue = ofColor(17,97,118);
@@ -26,35 +30,43 @@ void ofApp::draw(){
         ofTranslate(400+120*num, 550);
         for (int i=0; i<paths.size(); i++){
             ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
-//            paths[i].draw();
-            
+            paths[i].setColor(colors[num%3]);
+            paths[i].draw();
+//            ofDisableBlendMode();
+           
             paths[i].setPolyWindingMode(OF_POLY_WINDING_ODD);
             vector < ofPolyline > lines = paths[i].getOutline();
             for (int j=0; j<lines.size();j++){
 //                ofEnableSmoothing();
                 lines[j].setClosed(true);
-                lines[j] = lines[j].getResampledBySpacing(3);
-                lines[j] = lines[j].getSmoothed(10);
-                ofPolyline smoothedPolyline = lines[j];
-                ofPath smoothedPath;
-//                https://forum.openframeworks.cc/t/fill-polyline/10800/2
-                for( int k = 0; k < smoothedPolyline.getVertices().size(); k++) {
-                        if(k == 0) {
-                            smoothedPath.newSubPath();
-                            smoothedPath.moveTo(smoothedPolyline.getVertices()[k] );
-                        } else {
-                            smoothedPath.lineTo(smoothedPolyline.getVertices()[k] );
-                        }
-                    }
-                smoothedPath.close();
-                smoothedPath.setColor(colors[num%3]);
-                smoothedPath.draw();
+                lines[j] = lines[j].getResampledBySpacing(10);
+//                lines[j] = lines[j].getSmoothed(10);
+                ofSetColor(colors[num%3],2);
+                for (int k=0; k<lines[j].size();k++){
+                    ofDrawCircle(lines[j][k],20);
+                }
                 
-//                lines[j].draw();
+                
+                
+/*                ofPath smoothedPath;
+//                ofPolyline smoothedPolyline = lines[j];
+////                https://forum.openframeworks.cc/t/fill-polyline/10800/2
+//                for( int k = 0; k < smoothedPolyline.getVertices().size(); k++) {
+//                        if(k == 0) {
+//                            smoothedPath.newSubPath();
+//                            smoothedPath.moveTo(smoothedPolyline.getVertices()[k] );
+//                        } else {
+//                            smoothedPath.lineTo(smoothedPolyline.getVertices()[k] );
+//                        }
+//                    }
+//                smoothedPath.close();
+//                smoothedPath.setColor(colors[num%3]);
+//                smoothedPath.draw();
+*/
                 
             }
             ofDisableBlendMode();
-           
+//
         }
         
         ofPopMatrix();
