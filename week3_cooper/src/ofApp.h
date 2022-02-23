@@ -26,5 +26,6 @@ class ofApp : public ofBaseApp{
     ofShader shaderBlurX;
     ofFbo fboBlurOnePass;
     ofFbo fboBlurTwoPass;
+    ofImage image;
 		
 };
