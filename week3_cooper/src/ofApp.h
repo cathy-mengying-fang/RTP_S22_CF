@@ -24,5 +24,7 @@ class ofApp : public ofBaseApp{
     ofTrueTypeFont font;
     ofShader shaderBlurY;
     ofShader shaderBlurX;
+    ofFbo fboBlurOnePass;
+    ofFbo fboBlurTwoPass;
 		
 };

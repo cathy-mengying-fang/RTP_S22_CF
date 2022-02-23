@@ -6,6 +6,10 @@ void ofApp::setup(){
     ofEnableAlphaBlending();
     shaderBlurX.load("shadersGL3/shaderBlurX");
     shaderBlurY.load("shadersGL3/shaderBlurY");
+    // say how big you want each FBO to be
+    fboBlurOnePass.allocate(500, 500);
+    fboBlurTwoPass.allocate(500, 500);
+    
 }
 
 //--------------------------------------------------------------
@@ -30,8 +34,8 @@ void ofApp::draw(){
         ofTranslate(400+120*num, 550);
         for (int i=0; i<paths.size(); i++){
             ofEnableBlendMode(OF_BLENDMODE_MULTIPLY);
-            paths[i].setColor(colors[num%3]);
-            paths[i].draw();
+//            paths[i].setColor(colors[num%3]);
+//            paths[i].draw();
 //            ofDisableBlendMode();
            
             paths[i].setPolyWindingMode(OF_POLY_WINDING_ODD);
@@ -40,29 +44,59 @@ void ofApp::draw(){
 //                ofEnableSmoothing();
                 lines[j].setClosed(true);
                 lines[j] = lines[j].getResampledBySpacing(10);
-//                lines[j] = lines[j].getSmoothed(10);
-                ofSetColor(colors[num%3],2);
-                for (int k=0; k<lines[j].size();k++){
-                    ofDrawCircle(lines[j][k],20);
-                }
+                lines[j] = lines[j].getSmoothed(10);
+//                ofSetColor(colors[num%3]);
+//                for (int k=0; k<lines[j].size();k++){
+//                    ofDrawCircle(lines[j][k],20);
+//                }
                 
                 
                 
-/*                ofPath smoothedPath;
-//                ofPolyline smoothedPolyline = lines[j];
-////                https://forum.openframeworks.cc/t/fill-polyline/10800/2
-//                for( int k = 0; k < smoothedPolyline.getVertices().size(); k++) {
-//                        if(k == 0) {
-//                            smoothedPath.newSubPath();
-//                            smoothedPath.moveTo(smoothedPolyline.getVertices()[k] );
-//                        } else {
-//                            smoothedPath.lineTo(smoothedPolyline.getVertices()[k] );
-//                        }
-//                    }
-//                smoothedPath.close();
-//                smoothedPath.setColor(colors[num%3]);
-//                smoothedPath.draw();
-*/
+                ofPath smoothedPath;
+                ofPolyline smoothedPolyline = lines[j];
+//                https://forum.openframeworks.cc/t/fill-polyline/10800/2
+                for( int k = 0; k < smoothedPolyline.getVertices().size(); k++) {
+                        if(k == 0) {
+                            smoothedPath.newSubPath();
+                            smoothedPath.moveTo(smoothedPolyline.getVertices()[k] );
+                        } else {
+                            smoothedPath.lineTo(smoothedPolyline.getVertices()[k] );
+                        }
+                    }
+                smoothedPath.close();
+                
+//                float blur = ofMap(mouseX, 0, ofGetWidth(), 0, 10, true);
+//
+//                //----------------------------------------------------------
+//                    fboBlurOnePass.begin();
+//
+//                shaderBlurX.begin();
+//                shaderBlurX.setUniform1f("blurAmnt", blur);
+//
+//                smoothedPath.draw(0,0);
+//
+//                shaderBlurX.end();
+//
+//                    fboBlurOnePass.end();
+//
+//                //----------------------------------------------------------
+//                    fboBlurTwoPass.begin();
+//
+//                shaderBlurY.begin();
+//                shaderBlurY.setUniform1f("blurAmnt", blur);
+//
+//                    fboBlurOnePass.draw(0,0);
+//
+//                shaderBlurY.end();
+//
+//                    fboBlurTwoPass.end();
+//
+//                //----------------------------------------------------------
+//                ofSetColor(colors[num%3]);
+//                fboBlurTwoPass.draw(0,0);
+                smoothedPath.setColor(colors[num%3]);
+                smoothedPath.draw();
+
                 
             }
             ofDisableBlendMode();
