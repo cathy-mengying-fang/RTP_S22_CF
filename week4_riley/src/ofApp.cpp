@@ -13,29 +13,18 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofBackground (255);
-    ofSeedRandom(mouseX);
-    int width = ofGetWidth();
-    int height = ofGetHeight();
-    int lines = 13;
-    int dots = 52;
     
-    for (int line = 0; line < 13; line++){
-//        int prevX = 0;
-        for (int dot = 0; dot < 52; dot ++){
-            
-//            float offset = ofRandom(0,width/lines/2);
-//            float x = width/lines*line + offset;
-            float pct = ofMap(line, 0, 12, 0, 1);
-            float pow = ofRandom(0,1);
-            pct = powf(pct,pow);
-            float x = ofMap(pct,0,1,0,width);
-//            prevX = x;
-            float y = ofMap(dot,0,51,0,height);
-            
+    int y = 400;
+    for (int i=0; i<8; i++){
+        int x = 400;
+        int r = 200;
+        if (i%2 == 1){
             ofSetColor(0);
-            ofDrawCircle(x+50, y+20, 2);
         }
-
+        else{
+            ofSetColor(255);
+        }
+        ofDrawCircle(x-10*i,y,r-20*i);
     }
     
 
@@ -43,6 +32,14 @@ void ofApp::draw(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    if (key == 's'){
+        ofImage image;
+        int width = ofGetWindowWidth();
+        int height = ofGetWindowHeight();
+        image.grabScreen(0, 0, width, height);
+        string fileName = "file_"+ofGetTimestampString()+".jpg";
+        ofSaveImage(image,fileName); //save to disk
+   }
 
 }
 
