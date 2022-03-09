@@ -13,15 +13,40 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
     ofColor color;
+    int window = 5;
     for (int i = 0; i < 400; i++){
-        for (int j = 0; j < 800; j++){
-            if ((i+j)%2){
-                color = davinci.getColor(i, j);
+        int sumR = 0;
+        int sumG = 0;
+        int sumB = 0;
+        int avgR = 0;
+        int avgG = 0;
+        int avgB = 0;
+        for (int j = 0; j <= 800-window; j++){
+            sumR = 0;
+            sumG = 0;
+            sumB = 0;
+            avgR = 0;
+            avgG = 0;
+            avgB = 0;
+            for (int k = j; k < j + window; k++){
+                sumR += davinci.getColor(i, j).r;
+                sumG += davinci.getColor(i, j).g;
+                sumB += davinci.getColor(i, j).b;
+                sumR += monalisa.getColor(i, j).r;
+                sumG += monalisa.getColor(i, j).g;
+                sumB += monalisa.getColor(i, j).b;
             }
-            else{
-                color = monalisa.getColor(i, j);
-            }
-            monaleo.setColor(i,j,color);
+            avgR = int(sumR/window);
+            avgG = int(sumG/window);
+            avgB = int(sumB/window);
+            
+//            if (int(j/10)%2 ==0){
+//                color = davinci.getColor(i, j);
+//            }
+//            else if(int(j/10)%2 ==1){
+//                color = monalisa.getColor(i, j);
+//            }
+            monaleo.setColor(i,j,ofColor(avgR,avgG,avgB));
         }
     }
     monaleo.update();
