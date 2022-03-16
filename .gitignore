@@ -10,6 +10,8 @@
 *.obj
 *.jpg
 *.jpeg
+*.gif
+*.png
 
 # Precompiled Headers
 *.gch

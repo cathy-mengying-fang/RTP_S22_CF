@@ -20,19 +20,9 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
-		
-    ofImage monalisa;
-    ofImage davinci;
-    ofImage lillian;
-    ofImage monaleo;
     
-    ofColor pickColor();
-        void drawCircle();
+    vector < ofImage > images;
 
-        glm::vec2 center;
-        glm::vec2 toCenter;
-        bool drawing = false;
-        ofFbo fbo;
-        float resolution = 200;
-        bool fill = true;    
+    ofImage average;
+		
 };
