@@ -12,6 +12,7 @@
 *.jpeg
 *.gif
 *.png
+*.wav
 
 # Precompiled Headers
 *.gch

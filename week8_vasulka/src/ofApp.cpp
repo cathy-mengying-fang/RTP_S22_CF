@@ -10,10 +10,10 @@ void ofApp::setup(){
     
     img.allocate(grabber.getWidth(), grabber.getHeight(), OF_IMAGE_COLOR);
     
-//    beat.load("sounds/jdee_beat.mp3");
-//
-//    beat.setLoop(true);
-//    beat.play();
+    beat.load("sounds/scale.wav");
+
+    beat.setLoop(true);
+    beat.play();
 //
 }
 
@@ -26,20 +26,21 @@ void ofApp::update(){
     
     // (4) we use velocity for volume of the samples:
 //    float vel = sqrt(vx*vx + vy*vy);
-    float prc = ofMap(mouseY, 0, ofGetHeight(),0,1);
-    float vel = ofMap(prc,0,1,0,2);
+    float prc = ofMap(mouseY, 0, ofGetHeight(),0.5,1);
+    float vel = ofMap(prc,0.5,1,0.5,2);
     beat.setSpeed(vel);
 //    cout << vel << endl;
-    volume = MIN(vel/5.0f, 1);
+//    volume = MIN(vel/2.0f, 1);
 //    cout << volume << endl;
-    beat.setVolume(volume);
+    beat.setVolume(1);
     
     
 
     // (5) grab the fft, and put in into a "smoothed" array,
     //        by taking maximums, as peaks and then smoothing downward
     float * val = ofSoundGetSpectrum(nBandsToGet);        // request 128 values for fft
-//    float maxFFT;
+    float maxFFT = 0;
+    float pitch = 0;
     for (int i = 0;i < nBandsToGet; i++){
         
         // let the smoothed value sink to zero:
@@ -47,9 +48,14 @@ void ofApp::update(){
         
         // take the max, either the smoothed or the incoming:
         if (fftSmoothed[i] < val[i]) fftSmoothed[i] = val[i];
+        if (fftSmoothed[i] > maxFFT) {
+            maxFFT = fftSmoothed[i]*(i+1);
+            pitch = i;
+        }
     }
 
-    
+    cout << "maxFFT:"<<maxFFT << endl;
+    cout << "i:"<<pitch << endl;
     
     
     grabber.update();
@@ -107,15 +113,21 @@ void ofApp::update(){
 
             for (int x = 0; x < grabber.getWidth(); x+=2){
                 int whichImage = ofMap(x, 0, grabber.getWidth(), 0, images.size());
+                float prevPitch = 1.0;
                 for (int y = 0; y < grabber.getHeight(); y+=10){
-                    float freq = ofMap(mouseX,0,ofGetWidth(),0,10);
-                        cout << freq << endl;
-                    float shiftX = ofMap(sin(ofGetElapsedTimef()*freq + x*0.001), -1, 1, -100, 100);
+//                    float freq = ofMap(mouseX,0,ofGetWidth(),0,10);
+//                    float freq = ofMap(maxFFT,0,1.5,0,5);
+                    float ypct = ofMap(y,0,grabber.getHeight(),0,1);
+//                    float freq = prevPitch *0.9 + pitch *0.1;
+                    float freq = prevPitch *(1-ypct) + pitch *ypct;
+//                        cout << freq << endl;
+                    float shiftX = ofMap(sin(ofGetElapsedTimef()*freq*3 + x*0.001), -1, 1, -20, 20);
 
                     int xSelect = ofClamp(x+shiftX,0, grabber.getWidth());
                         ofColor color = images[whichImage].getColor(xSelect,y);
                         img.setColor(x, y, color);
-                    }
+                    prevPitch = freq;
+                }
         }
     }
     img.update();
@@ -128,7 +140,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-//    grabber.draw(0,0);
+    grabber.draw(0,0);
     img.draw(grabber.getWidth(), 0);
     
     float width = (float)(5*128) / nBandsToGet;
