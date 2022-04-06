@@ -103,26 +103,21 @@ void ofApp::update(){
     
     float time = ofGetElapsedTimef();
 
-//    if (images.size() > 1){
-//        for (int y = 0; y < grabber.getHeight(); y+=5){
-            for (int x = 100; x < grabber.getWidth()-101; x+=10){
-                int whichImage = ofMap(x, 0, grabber.getWidth(), 0, images.size());
-//            for (int x = 0; x < grabber.getWidth(); x+=5){
-                for (int y = 0; y < grabber.getHeight(); y+=10){
-                    
+    if (images.size() > 1){
 
-                float freq = ofMap(mouseX,0,ofGetWidth(),0,10);
-                    cout << freq << endl;
-                float shiftX = ofMap(sin(ofGetElapsedTimef()*freq + x*0.001), -1, 1, -100, 100);
-//                cout << shiftX << endl;
-//                int whichImage = ofMap(ofNoise(x+shiftX,
-//                                               y, time), 0, 1, 0, images.size()-1);
-                int xSelect = ofClamp(x+shiftX,0, grabber.getWidth());
-                    ofColor color = images[whichImage].getColor(xSelect,y);
-                    img.setColor(x, y, color);
-                }
+            for (int x = 0; x < grabber.getWidth(); x+=2){
+                int whichImage = ofMap(x, 0, grabber.getWidth(), 0, images.size());
+                for (int y = 0; y < grabber.getHeight(); y+=10){
+                    float freq = ofMap(mouseX,0,ofGetWidth(),0,10);
+                        cout << freq << endl;
+                    float shiftX = ofMap(sin(ofGetElapsedTimef()*freq + x*0.001), -1, 1, -100, 100);
+
+                    int xSelect = ofClamp(x+shiftX,0, grabber.getWidth());
+                        ofColor color = images[whichImage].getColor(xSelect,y);
+                        img.setColor(x, y, color);
+                    }
         }
-//    }
+    }
     img.update();
     
     
@@ -133,7 +128,7 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 
-    grabber.draw(0,0);
+//    grabber.draw(0,0);
     img.draw(grabber.getWidth(), 0);
     
     float width = (float)(5*128) / nBandsToGet;
